@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
+        .admin-container { padding: 20px; }
+        h2 { color: #007BFF; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background-color: #007BFF; color: white; }
+        .button { background-color: #007BFF; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; }
+        .button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <h2>Painel de Administração</h2>
+
+    <h3>Lista de Usuários</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>CPF</th>
+                <th>Nome</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user[1] }}</td>
+                <td>{{ user[2] }}</td>
+                <td>
+                    <form action="/set_admin/{{ user[0] }}" method="POST">
+                        <button type="submit" class="button" {% if user[3] %}disabled{% endif %}>Dar Admin</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Lista de Propostas</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Andamento</th>
+                <th>Parcela</th>
+                <th>Saldo Devedor</th>
+                <th>Banco</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proposta in propostas %}
+            <tr id="proposta-{{ proposta[0] }}">
+                <td>{{ proposta[0] }}</td>
+                <td><input type="text" value="{{ proposta[1] }}" class="editable" data-field="nome"></td>
+                <td><input type="text" value="{{ proposta[2] }}" class="editable" data-field="andamento"></td>
+                <td><input type="number" value="{{ proposta[3] }}" class="editable" data-field="parcela"></td>
+                <td><input type="number" value="{{ proposta[4] }}" class="editable" data-field="saldo_devedor"></td>
+                <td><input type="text" value="{{ proposta[5] }}" class="editable" data-field="banco"></td>
+                <td>
+                    <button class="button" onclick="saveChanges({{ proposta[0] }})">Salvar</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function saveChanges(propostaId) {
+    const row = document.getElementById(`proposta-${propostaId}`);
+    const nome = row.querySelector('input[data-field="nome"]').value;
+    const andamento = row.querySelector('input[data-field="andamento"]').value;
+    const parcela = row.querySelector('input[data-field="parcela"]').value;
+    const saldo_devedor = row.querySelector('input[data-field="saldo_devedor"]').value;
+    const banco = row.querySelector('input[data-field="banco"]').value; // Obter valor do campo banco
+
+    fetch(`/edit_proposta/${propostaId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            nome: nome,
+            andamento: andamento,
+            parcela: parcela,
+            saldo_devedor: saldo_devedor,
+            banco: banco // Passar o valor do banco para a rota
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Alterações salvas com sucesso!');
+        } else {
+            alert('Erro ao salvar as alterações.');
+        }
+    });
+}
+</script>
+
+</body>
+</html>

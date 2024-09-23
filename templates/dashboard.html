@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Usuário</title>
+    <style>
+        /* Estilos básicos */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+        h1 { margin: 0; }
+        .logout-button {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container {
+            padding: 20px;
+            flex: 1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            overflow-x: auto; /* Adiciona rolagem horizontal */
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column; /* Coloca o conteúdo em coluna */
+                align-items: center; /* Centraliza o conteúdo */
+            }
+            .logout-button {
+                margin-top: 10px; /* Margem em cima do botão para espaçamento */
+                position: static; /* Remove posição absoluta para melhor responsividade */
+            }
+            table, thead, tbody, th, td, tr {
+                display: block; /* Exibe tabela como bloco para responsividade */
+            }
+            th {
+                display: none; /* Esconde cabeçalho */
+            }
+            tr {
+                margin-bottom: 15px; /* Espaçamento entre linhas */
+            }
+            td {
+                text-align: right;
+                position: relative;
+                padding-left: 50%; /* Espaço para texto à esquerda */
+            }
+            td::before {
+                content: attr(data-label); /* Adiciona rótulo no conteúdo */
+                position: absolute;
+                left: 10px;
+                text-align: left;
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Painel do Usuário</h1>
+    <a href="/"><button class="logout-button">Sair</button></a> <!-- Redireciona para a página index -->
+</header>
+
+
+<div class="container">
+    <h2>Bem-vindo, {{ nome }}!</h2>
+
+    <form method="POST" action="/solicitar_proposta">
+        <label for="identificador">Identificador (CPF)</label>
+        <input type="text" id="identificador" name="identificador" value="{{ cpf }}" readonly>
+
+        <label for="tipo_proposta">Tipo de Proposta</label>
+        <select id="tipo_proposta" name="tipo_proposta" required>
+            <option value="Portabilidade">Portabilidade</option>
+            <option value="Refinanciamento">Refinanciamento</option>
+            <option value="Contrato Novo">Contrato Novo</option>
+        </select>
+
+        <label for="parcela">Parcela</label>
+        <input type="number" id="parcela" name="parcela" step="0.01" required>
+
+        <label for="saldo_devedor">Saldo Devedor</label>
+        <input type="text" id="saldo_devedor" name="saldo_devedor" required>
+
+        <label for="banco">Banco</label>
+        <input type="text" id="banco" name="banco" required>
+
+        <button type="submit">Solicitar Proposta</button>
+    </form>
+
+    <h3>Suas Propostas</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tipo de Proposta</th>
+                <th>Andamento</th>
+                <th>Parcela</th>
+                <th>Saldo Devedor</th>
+                <th>Banco</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proposta in propostas %}
+            <tr>
+                <td data-label="ID">{{ proposta[0] }}</td>
+                <td data-label="Tipo de Proposta">{{ proposta[1] }}</td>
+                <td data-label="Andamento">{{ proposta[2] }}</td>
+                <td data-label="Parcela">{{ proposta[3] }}</td>
+                <td data-label="Saldo Devedor">{{ proposta[4] }}</td>
+                <td data-label="Banco">{{ proposta[5] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<footer>
+    <p>&copy; 2024 Seu Nome ou Empresa. Todos os direitos reservados.</p>
+</footer>
+
+</body>
+</html>

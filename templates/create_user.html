@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Usuário</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f4f4f4; }
+        .register-container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); width: 300px; }
+        h2 { text-align: center; color: #007BFF; }
+        label { display: block; margin-bottom: 8px; color: #333; }
+        input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; }
+        button { width: 100%; background-color: #007BFF; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .error { color: red; text-align: center; display: block; }
+        .success { color: green; text-align: center; display: block; }
+    </style>
+</head>
+<body>
+<div class="register-container">
+    <h2>Criar Usuário</h2>
+    <form method="POST">
+        <label for="cpf">CPF</label>
+        <input type="text" id="cpf" name="cpf" required>
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" name="nome" required>
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" required>
+        <button type="submit">Criar Usuário</button>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="error">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </form>
+</div>
+</body>
+</html>

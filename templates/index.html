@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Site</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-right: 0px;
+        }
+        nav {
+            margin-top: 0px;
+        }
+        nav a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .box {
+            border: 1px solid #007BFF;
+            border-radius: 8px;
+            padding: 20px;
+            width: calc(33% - 40px);
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            flex: 1 1 30%;
+            max-width: 300px;
+        }
+        .box img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            border: 1px solid #007BFF;
+            border-radius: 8px;
+            margin: 20px 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .image-gallery img {
+            width: calc(20% - 10px);
+            margin: 5px;
+            border-radius: 5px;
+            height: auto;
+        }
+        .form-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-box {
+            border: 1px solid #007BFF;
+            border-radius: 8px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .form-box h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        .form-box label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-box input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .form-box button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-box button:hover {
+            background-color: #0056b3;
+        }
+        .whatsapp-button {
+            display: none;
+            margin-top: 10px;
+            background-color: #25D366;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+        .whatsapp-button:hover {
+            background-color: #128C7E;
+        }
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25D366;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+        .floating-button:hover {
+            background-color: #128C7E;
+        }
+        .about-us {
+            border: 1px solid #007BFF;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        .about-us h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        @media (max-width: 768px) {
+            .box {
+                width: calc(50% - 40px);
+            }
+            .image-gallery img {
+                width: calc(30% - 10px);
+            }
+        }
+        @media (max-width: 480px) {
+            .box {
+                width: 100%;
+            }
+            .image-gallery img {
+                width: calc(50% - 10px);
+            }
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropbtn {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <img src="{{ url_for('static', filename='logi.png') }}" alt="logo" class="logo">
+        <h1>Bem-vindo a Team PromoCred</h1>
+    </div>
+    <nav>
+        <a href="#sobre-nos">Sobre Nós</a>
+        <a href="#solicitar">Solicitar</a>
+        <a href="#calcular">Calcular</a>
+        <div class="dropdown">
+            <button class="dropbtn">Crédito</button>
+            <div class="dropdown-content">
+                <a href="#">Antecipação Saque Aniversário</a>
+                <a href="#">Empréstimos Consignado</a>
+                <a href="#">Portabilidade Consignado</a>
+                <a href="#">Refinanciamento Consignado</a>
+                <a href="#">Empréstimo BPC/LOAS</a>
+                <a href="#">Empréstimos Bolsa Família</a>
+            </div>
+        </div>
+        <button onclick="login()" style="background-color: #FFC107; color: black; padding: 10px; border: none; border-radius: 5px;">Login</button>
+    </nav>
+</header>
+
+<div style="color: #007BFF; text-align: center; margin: 35px; font-family: Arial, sans-serif;">
+    <h2>
+        <span>Crédito eficiente, seguro e </span><strong>100% digital</strong>
+    </h2>
+</div>
+
+<div style="color: #007BFF; text-align: center; margin: 35px; font-family: Arial, sans-serif;">
+    <h2>
+        <span>PORTABILIDADE DE EMPRÉSTIMO CONSIGNADO</span>
+    </h2>
+</div>
+<div style="color: black; text-align: center; margin: 20px; font-family: Arial, sans-serif; font-size: 1.5rem;">
+    <h3>Por que ficar pagando caro no seu consignado? Troque agora por um mais barato</h3>
+</div>
+
+<div class="container">
+    <div class="box">
+        <img src="{{ url_for('static', filename='Renascer.png') }}" alt="Imagem 1">
+        <h3>PORTABILIDADE</h3>
+        <p>A portabilidade de empréstimo permite transferir empréstimos de uma instituição financeira para outra, oferecendo melhores condições.</p>
+        <button onclick="scrollToForm('form-portabilidade')">Simule</button>
+    </div>
+    <div class="box">
+        <img src="{{ url_for('static', filename='REFIN(1).png') }}" alt="Imagem 2">
+        <h3>REFINANCIAMENTO</h3>
+        <p>Para refinanciar, você deve manifestar seu interesse à instituição financeira onde o crédito foi contratado.</p>
+        <button onclick="scrollToForm('form-margem')">Simule</button>
+    </div>
+    <div class="box">
+        <img src="{{ url_for('static', filename='NOVO(1).png') }}" alt="Imagem 3">
+        <h3>CONTRATO NOVO</h3>
+        <p>O novo contrato permite aumentar o prazo de pagamento dos empréstimos consignados e liberar um valor adicional de crédito.</p>
+        <button onclick="scrollToForm('form-margem')">Simule</button>
+    </div>
+</div>
+
+<div class="image-gallery">
+    <h3>BANCOS PARCEIROS</h3>
+    <img src="{{ url_for('static', filename='QUEROMAIS.png') }}" alt="Banco 1">
+    <img src="{{ url_for('static', filename='pan.png') }}" alt="Banco 2">
+    <img src="{{ url_for('static', filename='BMG.png') }}" alt="Banco 3">
+    <img src="{{ url_for('static', filename='BRB.png') }}" alt="Banco 4">
+    <img src="{{ url_for('static', filename='c6.png') }}" alt="Banco 5">
+    <img src="{{ url_for('static', filename='CREFISA.png') }}" alt="Banco 5">
+    <img src="{{ url_for('static', filename='INBURSA.png') }}" alt="Banco 5">
+    <img src="{{ url_for('static', filename='ITAU.png') }}" alt="Banco 5">
+    <img src="{{ url_for('static', filename='FACTA.png') }}" alt="Banco 5">
+    <img src="{{ url_for('static', filename='DAYCOVAL.jpg') }}" alt="Banco 5">
+    <img src="{{ url_for('static', filename='SAFRA.jpg') }}" alt="Banco 5">
+    <img src="{{ url_for('static', filename='HAPPY.jpg') }}" alt="Banco 5">
+    <img src="{{ url_for('static', filename='BRADESCO.jpg') }}" alt="Banco 5">
+</div>
+
+<div class="form-container">
+    <div class="form-box" id="form-portabilidade">
+    <h3>Simular Portabilidade</h3>
+    <form id="form-portabilidade">
+        <label for="prazo">Prazo (meses)</label>
+        <input type="number" id="prazo" name="prazo" required>
+
+        <label for="taxa">Taxa (%)</label>
+        <input type="text" id="taxa" name="taxa" value="1.34" readonly>
+
+        <label for="saldo">Saldo Devedor</label>
+        <input type="number" id="saldo" name="saldo" required>
+
+        <button type="button" onclick="calcularPortabilidade()">Calcular Parcela</button>
+        <p id="resultado-portabilidade"></p>
+    </form>
+</div>
+
+
+    <div class="form-box" id="form-margem">
+        <h3>Calcular Margem Nova</h3>
+        <form id="form-margem">
+            <label for="parcela">Valor da Parcela</label>
+            <input type="number" id="parcela" name="parcela" required>
+            <button type="button" onclick="calcularMargem()">Calcular Margem</button>
+            <p id="resultado-margem"></p>
+            <a id="contratar-button" href="https://wa.me/5511985786452?text=Olá, gostaria de contratar o serviço." class="whatsapp-button">Contratar</a>
+        </form>
+    </div>
+</div>
+
+<div class="about-us" id="sobre-nos">
+    <h3>Sobre Nós</h3>
+    <p>Com mais de 5 anos de experiência na área de crédito, nossa equipe é composta por profissionais dedicados que já atuaram em diversas promotoras de crédito. Temos um profundo entendimento do mercado e estamos comprometidos em oferecer as melhores soluções financeiras para nossos clientes.</p>
+    <p>Nosso objetivo é ajudar você a encontrar as melhores opções de crédito, proporcionando um atendimento personalizado e transparente. Acreditamos que cada cliente é único e merece uma solução que atenda às suas necessidades específicas.</p>
+    <p>Estamos aqui para guiá-lo em cada etapa do processo, desde a simulação até a contratação do seu empréstimo, sempre com o foco em oferecer as melhores condições e a máxima satisfação.</p>
+</div>
+
+<a href="https://wa.me/5511985786452?text=Olá, gostaria de falar com vocês." class="floating-button">Fale Conosco</a>
+
+<script>
+    function calcularPortabilidade() {
+        const saldo = document.getElementById('saldo').value; // Valor do empréstimo
+        const n = 84; // Número de parcelas
+        const i2 = 0.0134; // Nova taxa de juros mensal (1,34%)
+
+        // Cálculo da nova parcela
+        const taxaMensalNova = i2;
+        const novaParcela = (saldo * taxaMensalNova) / (1 - Math.pow(1 + taxaMensalNova, -n));
+
+        document.getElementById('resultado-portabilidade').textContent = `Nova Parcela: R$ ${novaParcela.toFixed(2)}`;
+    }
+
+    function calcularMargem() {
+        const parcela = document.getElementById('parcela').value;
+
+        // Cálculo manual da nova margem
+        const novaMargem = parcela / 0.023201;
+
+        document.getElementById('resultado-margem').textContent = `Valor Liberado : R$ ${novaMargem.toFixed(2)}`;
+        document.getElementById('contratar-button').style.display = 'block';
+    }
+
+    function scrollToForm(formId) {
+        const formElement = document.getElementById(formId);
+        formElement.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function login() {
+        window.location.href = '/login'; // Redireciona para a tela de login
+    }
+</script>
+
+<footer style="background-color: #007BFF; color: white; padding: 20px; text-align: center;">
+    <h3>Siga-nos nas redes sociais</h3>
+    <div>
+        <a href="https://www.instagram.com/seu_perfil" target="_blank" style="margin: 0 15px; color: white; text-decoration: none;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width: 30px; height: auto;">
+        </a>
+        <a href="https://wa.me/5511985786452" target="_blank" style="margin: 0 15px; color: white; text-decoration: none;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width: 30px; height: auto;">
+        </a>
+        <a href="https://www.facebook.com/seu_perfil" target="_blank" style="margin: 0 15px; color: white; text-decoration: none;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" style="width: 30px; height: auto;">
+        </a>
+    </div>
+    <p>Horário de atendimento:</p>
+    <p>Segunda a Sexta: 08:00 - 20:00</p>
+    <p>Sábado: 08:00 - 16:00</p>
+    <p>&copy; 2024 Team PromoCred. Todos os direitos reservados.</p>
+</footer>
+
+</body>
+</html>
