@@ -26,6 +26,8 @@
         <input type="text" id="nome" name="nome" required>
         <label for="senha">Senha</label>
         <input type="password" id="senha" name="senha" required>
+        <label for="is_admin">Definir como Administrador</label>
+        <input type="checkbox" id="is_admin" name="is_admin">
         <button type="submit">Criar Usuário</button>
         {% with messages = get_flashed_messages() %}
             {% if messages %}

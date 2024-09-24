@@ -47,11 +47,12 @@ def create_user():
         cpf = request.form['cpf']
         nome = request.form['nome']
         senha = request.form['senha']
+        is_admin = 1 if 'is_admin' in request.form else 0  # Verifica se o checkbox foi marcado
 
         try:
             conn = sqlite3.connect('users.db')
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO users (cpf, nome, senha) VALUES (?, ?, ?)", (cpf, nome, senha))
+            cursor.execute("INSERT INTO users (cpf, nome, senha, is_admin) VALUES (?, ?, ?, ?)", (cpf, nome, senha, is_admin))
             conn.commit()
             conn.close()
             flash('Usuário criado com sucesso!')
@@ -60,6 +61,7 @@ def create_user():
             flash('CPF já cadastrado!')
 
     return render_template('create_user.html')
+
 
 # Rota para a página de login
 @app.route('/login', methods=['GET', 'POST'])
@@ -90,6 +92,7 @@ def login():
     return render_template('login.html')
 
 # Rota para a página de administração
+# Rota para a página de administração
 @app.route('/admin')
 def admin_page():
     if 'user_id' not in session or not session.get('is_admin'):
@@ -101,7 +104,11 @@ def admin_page():
     cursor.execute("SELECT id, cpf, nome, is_admin FROM users")
     users = cursor.fetchall()
 
-    cursor.execute("SELECT id, nome, andamento, parcela, saldo_devedor, banco FROM propostas")
+    cursor.execute("""
+        SELECT p.id, p.nome, p.andamento, p.parcela, p.saldo_devedor, p.banco, u.cpf 
+        FROM propostas p 
+        JOIN users u ON p.user_id = u.id
+    """)
     propostas = cursor.fetchall()
 
     conn.close()
@@ -138,6 +145,21 @@ def logout():
     session.clear()  # Limpa a sessão
     flash('Você foi desconectado com sucesso!')
     return redirect('/login')
+
+@app.route('/delete_proposta/<int:proposta_id>', methods=['POST'])
+def delete_proposta(proposta_id):
+    if 'user_id' not in session or not session.get('is_admin'):
+        return redirect('/login')
+
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM propostas WHERE id = ?", (proposta_id,))
+    conn.commit()
+    conn.close()
+
+    flash('Proposta deletada com sucesso!')
+    return redirect('/admin')
+
 
 # Rota para o dashboard do usuário
 @app.route('/dashboard')
@@ -178,6 +200,5 @@ def solicitar_proposta():
     return redirect('/dashboard')
 
 if __name__ == '__main__':
-    create_db()
-    app.run(host='0.0.0.0', port=5000, debug=True)
-
+    create_db()  # Cria o banco de dados ao iniciar
+    app.run(debug=True)

@@ -54,6 +54,7 @@
                 <th>Parcela</th>
                 <th>Saldo Devedor</th>
                 <th>Banco</th>
+                <th>CPF do Solicitante</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -66,8 +67,12 @@
                 <td><input type="number" value="{{ proposta[3] }}" class="editable" data-field="parcela"></td>
                 <td><input type="number" value="{{ proposta[4] }}" class="editable" data-field="saldo_devedor"></td>
                 <td><input type="text" value="{{ proposta[5] }}" class="editable" data-field="banco"></td>
+                <td>{{ proposta[6] }}</td> <!-- Exibindo CPF do solicitante -->
                 <td>
                     <button class="button" onclick="saveChanges({{ proposta[0] }})">Salvar</button>
+                    <form action="/delete_proposta/{{ proposta[0] }}" method="POST" style="display:inline;">
+                        <button type="submit" class="button" onclick="return confirm('Tem certeza que deseja deletar esta proposta?');">Deletar</button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}
@@ -82,7 +87,7 @@ function saveChanges(propostaId) {
     const andamento = row.querySelector('input[data-field="andamento"]').value;
     const parcela = row.querySelector('input[data-field="parcela"]').value;
     const saldo_devedor = row.querySelector('input[data-field="saldo_devedor"]').value;
-    const banco = row.querySelector('input[data-field="banco"]').value; // Obter valor do campo banco
+    const banco = row.querySelector('input[data-field="banco"]').value;
 
     fetch(`/edit_proposta/${propostaId}`, {
         method: 'POST',
@@ -94,7 +99,7 @@ function saveChanges(propostaId) {
             andamento: andamento,
             parcela: parcela,
             saldo_devedor: saldo_devedor,
-            banco: banco // Passar o valor do banco para a rota
+            banco: banco
         })
     })
     .then(response => response.json())

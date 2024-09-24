@@ -1,0 +1,16 @@
+app = "jw-polished-dawn-6036"
+
+[build]
+  builder = "heroku/builder:20"
+
+[[services]]
+  [[services.http]]
+    internal_port = 5000
+    auto_stop_machines = false
+
+    [[services.http.ports]]
+      port = 80
+
+[[processes]]
+  [processes.web]
+    cmd = "npm start"  # Atualizado para usar npm start
