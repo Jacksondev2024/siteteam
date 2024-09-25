@@ -201,4 +201,4 @@ def solicitar_proposta():
 
 if __name__ == '__main__':
     create_db()  # Cria o banco de dados ao iniciar
-    app.run(debug=True)
+     app.run(host='0.0.0.0', port=5000, debug=True)
